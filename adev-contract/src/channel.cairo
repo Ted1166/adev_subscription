@@ -6,7 +6,7 @@
 
 // starkli declare class hash 0x04c29bca3d6ccbbf7d16e1611bc1774d7769aee3b66c4269b7e2bc53e3e182bf
 // starkli contract address 0x053c42c0e04c754750f79b8f64fcacb2eceb012b303643ad6ba510b6d04fbafb
-use adev_subscription::channel::Subscribe::{Packages, Msg, Subscription, ContractAddress};
+use stark_subscription::channel::Subscribe::{Packages, Msg, Subscription, ContractAddress,MediaFile,Channel};
 use core::array::ArrayTrait;
 
 
@@ -18,6 +18,13 @@ trait subscribeTrait<TContractState> {
     fn subs_package(ref self:TContractState, package_id : u128, user : ContractAddress, key:u128, message_key:u128);
     fn get_message(self:@TContractState, key:u128) -> Msg;
     fn get_packages(self: @TContractState) -> Array<Packages>;
+    fn create_channel(ref self:TContractState,channel_name:felt252);
+    fn get_channel(self:@TContractState,key:u128) -> Channel;
+    fn get_channels(self:@TContractState) -> Array<Channel>;
+    fn get_media_file(self:@TContractState,key:u128) -> MediaFile;
+    fn get_media_by_channel(self:@TContractState,channel_id:u128) -> Array<MediaFile>;
+    fn create_media_file(ref self:TContractState, channel_id:u128, cid:felt252);
+    
     }
 
 #[starknet::contract]
@@ -40,10 +47,14 @@ mod Subscribe {
     struct Storage {
         packages : LegacyMap::<u128, Packages>,
         packages_count: u128,
+        channel_count:u128,
+        media_count:u128,
         subscriptions: LegacyMap::<u128, Subscription>,
         messages: LegacyMap::<u128, Msg>,
         pragma_contract: ContractAddress,
-        summary_stats: ContractAddress
+        summary_stats: ContractAddress,
+        channels:LegacyMap::<u128, Channel>,
+        media_files:LegacyMap::<u128, MediaFile>
     }
 
     #[constructor]
@@ -73,7 +84,23 @@ mod Subscribe {
         user : ContractAddress
     }
 
-    #[external(v0)]
+    #[derive(Copy, Drop, Serde, starknet::Store)]
+    struct MediaFile {
+        media_id : u128,
+        cid : felt252,
+        channel_id: u128
+    }
+
+    #[derive(Copy, Drop, Serde, starknet::Store)]
+    struct Channel {
+        channel_id : u128,
+        channel_name : felt252,
+        channel_owner: ContractAddress
+    }
+
+
+
+    #[abi(embed_v0)]
     impl subscribeImpl of super::subscribeTrait<ContractState> {
 
         fn get_asset_price(self: @ContractState, asset_id: felt252) -> u128 {
@@ -95,6 +122,8 @@ mod Subscribe {
             self.packages.write(key_, new_package);
             self.packages_count.write(key_);
         }
+
+
 
         fn get_package(self:@ContractState,key:u128) -> Packages{
             self.packages.read(key)
@@ -130,12 +159,84 @@ mod Subscribe {
             }
             packages
         }
+
+        fn create_channel(ref self:ContractState,channel_name:felt252){
+
+            let channel_id = self.channel_count.read() + 1;
+
+            self.channel_count.write(channel_id);
+
+            let channel_owner = get_caller_address();
+
+            self.channels.write(channel_id,Channel{channel_id,channel_name,channel_owner});
+        }
+
+        fn get_channel(self:@ContractState,key:u128) -> Channel{
+            self.channels.read(key)
+        }
+
+        fn get_channels(self:@ContractState) -> Array<Channel>{
+
+            let mut channels = ArrayTrait::<Channel>::new();
+            let total_channels = self.channel_count.read();
+            let mut count = 1;
+
+            if total_channels > 0{
+                loop {
+                    let channel = self.channels.read(count);
+                    channels.append(channel);
+                    count +=1;
+                    if(count > total_channels){
+                        break;
+                    }
+                }
+            }
+            channels
+        }
+        fn get_media_file(self:@ContractState,key:u128) -> MediaFile{
+            self.media_files.read(key)
+        }
+
+        fn get_media_by_channel(self:@ContractState,channel_id:u128) -> Array<MediaFile>{
+
+            let mut media_files = ArrayTrait::<MediaFile>::new();
+            let total_channel_media_files = self.media_count.read();
+            let mut count = 1;
+
+            if total_channel_media_files > 0{
+                loop {
+                    let media_file = self.media_files.read(count);
+
+                    if (media_file.channel_id == channel_id){
+                        media_files.append(media_file);
+                    }
+
+                    count +=1;
+                    if(count > total_channel_media_files){
+                        break;
+                    }
+                }
+            }
+
+            media_files
+
+        }
+
+        fn create_media_file(ref self:ContractState, channel_id:u128,cid:felt252){
+
+            let media_id = self.media_count.read() +1;
+
+            self.media_count.write(media_id);
+
+            self.media_files.write(media_id, MediaFile {media_id,cid,channel_id});
+
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use adev_subscription::channel::subscribeTraitDispatcherTrait;
+    use stark_subscription::channel::subscribeTraitDispatcherTrait;
     // use super::subscribe;
     use super::subscribeTraitDispatcher;
     use core::array::ArrayTrait;
@@ -173,7 +274,7 @@ mod tests {
     #[available_gas(20000000)]
     fn test_subs_package() {
         let mut contract = deploy();
-        let package_id = 1;
+        let _package_id = 1;
         let user: ContractAddress =  contract_address_const::<0x00000>();
 
         let sub_package = 'sub_package';
@@ -189,11 +290,6 @@ mod tests {
     }
 
 }
-
-
-
-
-
 
 
 // Account #2:
