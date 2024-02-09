@@ -6,7 +6,7 @@
 
 // starkli declare class hash 0x04c29bca3d6ccbbf7d16e1611bc1774d7769aee3b66c4269b7e2bc53e3e182bf
 // starkli contract address 0x053c42c0e04c754750f79b8f64fcacb2eceb012b303643ad6ba510b6d04fbafb
-use stark_subscription::channel::Subscribe::{Packages, Msg, Subscription, ContractAddress,MediaFile,Channel};
+use adev_subscription::channel::Subscribe::{Packages, Msg, Subscription, ContractAddress,MediaFile,Channel};
 use core::array::ArrayTrait;
 
 
@@ -236,7 +236,7 @@ mod Subscribe {
 
 #[cfg(test)]
 mod tests {
-    use stark_subscription::channel::subscribeTraitDispatcherTrait;
+    use adev_subscription::channel::subscribeTraitDispatcherTrait;
     // use super::subscribe;
     use super::subscribeTraitDispatcher;
     use core::array::ArrayTrait;
