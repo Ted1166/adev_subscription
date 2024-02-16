@@ -52,5 +52,4 @@ Pull requests should target the develop branch. Follow these steps:
 - MIT Licenses
 
 ## Contact Information
-- Peter: kagwepeter07@gmail.com [github](https://github.com/Kagwep)
 - Ted: ogolated00@gmail.com [github](https://github.com/Ted1166)
