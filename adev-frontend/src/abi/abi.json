@@ -1,1 +1,297 @@
-{"abi":[{"type":"impl","name":"subscribeImpl","interface_name":"stark_subscription::channel::subscribeTrait"},{"type":"struct","name":"stark_subscription::channel::subscribe::Packages","members":[{"name":"sub_package","type":"core::felt252"},{"name":"package_id","type":"core::integer::u128"},{"name":"channels","type":"core::felt252"},{"name":"price","type":"core::integer::u128"}]},{"type":"struct","name":"stark_subscription::channel::subscribe::Msg","members":[{"name":"recipient","type":"core::starknet::contract_address::ContractAddress"},{"name":"msg","type":"core::felt252"}]},{"type":"interface","name":"stark_subscription::channel::subscribeTrait","items":[{"type":"function","name":"add_package","inputs":[{"name":"sub_package","type":"core::felt252"},{"name":"channels","type":"core::felt252"},{"name":"price","type":"core::integer::u128"}],"outputs":[],"state_mutability":"external"},{"type":"function","name":"get_package","inputs":[{"name":"key","type":"core::integer::u128"}],"outputs":[{"type":"stark_subscription::channel::subscribe::Packages"}],"state_mutability":"view"},{"type":"function","name":"subs_package","inputs":[{"name":"package_id","type":"core::integer::u128"},{"name":"user","type":"core::starknet::contract_address::ContractAddress"},{"name":"key","type":"core::integer::u128"},{"name":"message_key","type":"core::integer::u128"}],"outputs":[],"state_mutability":"external"},{"type":"function","name":"get_message","inputs":[{"name":"key","type":"core::integer::u128"}],"outputs":[{"type":"stark_subscription::channel::subscribe::Msg"}],"state_mutability":"view"},{"type":"function","name":"get_packages","inputs":[],"outputs":[{"type":"core::array::Array::<stark_subscription::channel::subscribe::Packages>"}],"state_mutability":"view"}]},{"type":"event","name":"stark_subscription::channel::subscribe::Event","kind":"enum","variants":[]}]}
+{
+    "abi": [
+        {
+            "type": "impl",
+            "name": "subscribeImpl",
+            "interface_name": "adev_subscription::channel::subscribeTrait"
+        },
+        {
+            "type": "struct",
+            "name": "adev_subscription::channel::Packages",
+            "members": [
+                {
+                    "name": "sub_package",
+                    "type": "core::felt252"
+                },
+                {
+                    "name": "package_id",
+                    "type": "core::integer::u128"
+                },
+                {
+                    "name": "channels",
+                    "type": "core::felt252"
+                },
+                {
+                    "name": "price",
+                    "type": "core::integer::u128"
+                }
+            ]
+        },
+        {
+            "type": "struct",
+            "name": "adev_subscription::channel::Msg",
+            "members": [
+                {
+                    "name": "recipient",
+                    "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                    "name": "msg",
+                    "type": "core::felt252"
+                }
+            ]
+        },
+        {
+            "type": "struct",
+            "name": "adev_subscription::channel::Channel",
+            "members": [
+                {
+                    "name": "channel_id",
+                    "type": "core::integer::u128"
+                },
+                {
+                    "name": "channel_name",
+                    "type": "core::felt252"
+                },
+                {
+                    "name": "channel_owner",
+                    "type": "core::starknet::contract_address::ContractAddress"
+                }
+            ]
+        },
+        {
+            "type": "struct",
+            "name": "adev_subscription::channel::MediaFile",
+            "members": [
+                {
+                    "name": "media_id",
+                    "type": "core::integer::u128"
+                },
+                {
+                    "name": "cid",
+                    "type": "core::felt252"
+                },
+                {
+                    "name": "channel_id",
+                    "type": "core::integer::u128"
+                }
+            ]
+        },
+        {
+            "type": "interface",
+            "name": "adev_subscription::channel::subscribeTrait",
+            "items": [
+                {
+                    "type": "function",
+                    "name": "get_asset_price",
+                    "inputs": [
+                        {
+                            "name": "asset_id",
+                            "type": "core::felt252"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "core::integer::u128"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "add_package",
+                    "inputs": [
+                        {
+                            "name": "sub_package",
+                            "type": "core::felt252"
+                        },
+                        {
+                            "name": "channels",
+                            "type": "core::felt252"
+                        },
+                        {
+                            "name": "price",
+                            "type": "core::integer::u128"
+                        }
+                    ],
+                    "outputs": [],
+                    "state_mutability": "external"
+                },
+                {
+                    "type": "function",
+                    "name": "get_package",
+                    "inputs": [
+                        {
+                            "name": "key",
+                            "type": "core::integer::u128"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "adev_subscription::channel::Packages"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "subs_package",
+                    "inputs": [
+                        {
+                            "name": "package_id",
+                            "type": "core::integer::u128"
+                        },
+                        {
+                            "name": "user",
+                            "type": "core::starknet::contract_address::ContractAddress"
+                        },
+                        {
+                            "name": "key",
+                            "type": "core::integer::u128"
+                        },
+                        {
+                            "name": "message_key",
+                            "type": "core::integer::u128"
+                        }
+                    ],
+                    "outputs": [],
+                    "state_mutability": "external"
+                },
+                {
+                    "type": "function",
+                    "name": "get_message",
+                    "inputs": [
+                        {
+                            "name": "key",
+                            "type": "core::integer::u128"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "adev_subscription::channel::Msg"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "get_packages",
+                    "inputs": [],
+                    "outputs": [
+                        {
+                            "type": "core::array::Array::<adev_subscription::channel::Packages>"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "create_channel",
+                    "inputs": [
+                        {
+                            "name": "channel_name",
+                            "type": "core::felt252"
+                        }
+                    ],
+                    "outputs": [],
+                    "state_mutability": "external"
+                },
+                {
+                    "type": "function",
+                    "name": "get_channel",
+                    "inputs": [
+                        {
+                            "name": "key",
+                            "type": "core::integer::u128"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "adev_subscription::channel::Channel"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "get_channels",
+                    "inputs": [],
+                    "outputs": [
+                        {
+                            "type": "core::array::Array::<adev_subscription::channel::Channel>"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "get_media_file",
+                    "inputs": [
+                        {
+                            "name": "key",
+                            "type": "core::integer::u128"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "adev_subscription::channel::MediaFile"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "get_media_by_channel",
+                    "inputs": [
+                        {
+                            "name": "channel_id",
+                            "type": "core::integer::u128"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "core::array::Array::<adev_subscription::channel::MediaFile>"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "create_media_file",
+                    "inputs": [
+                        {
+                            "name": "channel_id",
+                            "type": "core::integer::u128"
+                        },
+                        {
+                            "name": "cid",
+                            "type": "core::felt252"
+                        }
+                    ],
+                    "outputs": [],
+                    "state_mutability": "external"
+                }
+            ]
+        },
+        {
+            "type": "constructor",
+            "name": "constructor",
+            "inputs": [
+                {
+                    "name": "pragma_address",
+                    "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                    "name": "summary_stats_address",
+                    "type": "core::starknet::contract_address::ContractAddress"
+                }
+            ]
+        },
+        {
+            "type": "event",
+            "name": "adev_subscription::channel::Subscribe::Event",
+            "kind": "enum",
+            "variants": []
+        }
+    ]
+}
